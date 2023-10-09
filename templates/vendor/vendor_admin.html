@@ -1,0 +1,348 @@
+{% extends 'core/base.html' %}
+
+{% load static %}
+{% block title %}Vendor Admin{% endblock title %}
+{% block css %}
+/* Reset some default styles */
+body, h1, p {
+    margin: 0;
+    padding: 0;
+}
+
+/* Dashboard Container Styles */
+.dashboard {
+    font-family: Arial, sans-serif;
+    background-color: #f7f7f7;
+    border: 1px solid #e0e0e0;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    max-width: 800px;
+    margin: 0 auto;
+    margin-bottom: 20px;
+}
+
+/* Header Styles */
+header {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+header h1 {
+    font-size: 28px;
+    color: black;
+    margin-bottom: 10px;
+}
+
+.balance, .paid-amount {
+    display: inline-block;
+    margin: 0 10px;
+}
+
+.balance-amount, .amount {
+    font-size: 20px;
+    color: #ca373d;
+    font-weight: bold;
+}
+
+/* My Products Styles */
+.products {
+    margin-bottom: 30px;
+}
+
+.products h2 {
+    font-size: 24px;
+    color: #333;
+    margin-bottom: 10px;
+}
+
+.product-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+.product-table th, .product-table td {
+    padding: 10px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}
+
+.product-table th {
+    background-color: #ca373d;
+    color: #fff;
+    font-weight: bold;
+}
+
+.product-table tbody tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
+
+.product-table tbody tr:hover {
+    background-color: #ddd;
+}
+.add_prod{
+    text-decoration: none;
+    color: #ddd;
+}
+
+.add-product {
+    margin-top: 10px;
+    background-color: #ca373d;
+    color: #fff;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.2s ease-in-out;
+}
+
+
+/* My Orders Styles */
+.orders h2 {
+    font-size: 24px;
+    color: #333;
+    margin-bottom: 10px;
+}
+
+.order-status {
+    display: flex;
+    justify-content: space-between;
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.received-orders, .completed-orders {
+    text-align: center;
+}
+
+.received-count, .completed-count {
+    font-weight: bold;
+    color: #2e4ead;
+    font-size: 18px;
+}
+select{
+    padding: 7px 1em;
+    margin-bottom:10px;
+}
+
+input[type="text"],
+input[type="number"],
+input[type="password"] {
+  width: 20%;
+  padding: 10px;
+  margin-bottom: 15px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.hide{
+    visibility: hidden;
+}
+{% endblock css %}
+
+{% block content %}
+
+<div class="modal" tabindex="-1" id="successdiv" style="z-index:100; display:none;" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Delivery Available</h5>
+        <button type="button" class="close" id="closebtn" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p>Yay!! Delivery is available for United State. 🎉 <br> Add products and continue delivery..</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" id="close" class="btn btn-secondary" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+     <div class="dashboard">
+        <header>
+            <h1>Welcome, {{vendor.name}}</h1>
+            <div class="balance">
+                <p>Balance:</p>
+                <p class="balance-amount">${{vendor.get_balance}}</p>
+            </div>
+            <div class="paid-amount">
+                <p>Paid Amount:</p>
+                <p class="amount">${{vendor.get_paid_ammount}}</p>
+            </div>
+        </header>
+         <div class="d-flex justify-content-around">
+            <div class="card text-white mb-3" style="background-color:#f59da0; width:100px;">
+              <div class="card-body">
+                <img src="{% static 'images/editProf.png' %}">
+              </div>
+            </div>
+             <div class="card text-white mb-3" style="background-color:#f59da0; width:100px;">
+              <div class="card-body">
+                <img style="" src="{% static 'images/addProd.png' %}">
+              </div>
+            </div>
+             <div class="card text-white mb-3" style="background-color:#f59da0; width:100px;">
+              <div class="card-body">
+                <img style="" src="{% static 'images/tarrifCal.png' %}">
+              </div>
+            </div>
+         </div>
+        <section class="products">
+            <h2>My Products</h2>
+            <table class="product-table">
+
+                <thead>
+                    <tr>
+                        <th>Serial Number</th>
+                        <th>Product Name</th>
+                        <th>Price</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    {% for product in products %}
+                        <tr>
+                            <td>{{ forloop.counter }}</td>
+                            <td><a href="{% url 'product:product' product.category.slug product.slug %}">{{ product.title }}</a></td>
+                            <td>${{ product.price }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+
+            </table>
+            <button class="add-product"><a class="add_prod" href="{% url 'vendor:add-product' %}">Add Product</a></button>
+        </section>
+
+    </div>
+    <div class="box">
+        <h2 class="is-size-3 mb-4">Check Delivery Availability</h2>
+       <h1 class="mb-2"> <label for="countrySelect" style="font-weight:600;">Select a country:</label></h1>
+    <select id="countrySelect" style="width: 300px;">
+        <option></option> <!-- Add an empty option for the search box -->
+        <option value="India">India</option>
+        <option value="United States">United States</option>
+        <option value="Canada">Canada</option>
+        <option value="United Kingdom">United Kingdom</option>
+        <!-- Add more countries here -->
+    </select>
+        <div class="control">
+                <button id="submit" class="button is-uppercase" style="background-color: #ca373d; color:#fff;">Check</button>
+        </div>
+    </div>
+
+    <div class="box">
+        <h2 class="is-size-3 mb-4">Tarrif Calculation- For Information Purpose Only</h2>
+       <h1 class="mb-2"> <label for="countrySel" style="font-weight:600;">Select a country:</label></h1>
+    <select id="countrySel" style="width: 300px;">
+        <option></option> <!-- Add an empty option for the search box -->
+        <option value="India">India</option>
+        <option value="United States">United States</option>
+        <option value="Canada">Canada</option>
+        <option value="United Kingdom">United Kingdom</option>
+        <!-- Add more countries here -->
+    </select>
+        <h1 class="mb-2"> <label for="parcel" style="font-weight:600;">Select Parcel Type:</label></h1>
+    <select id="parcel" style="width: 300px;">
+        <option></option> <!-- Add an empty option for the search box -->
+        <option value="India">International Parcel</option>
+        <option value="United States">Speed Post Letter</option>
+        <option value="Canada">International Speed Post</option>
+        <option value="United Kingdom">In India Parcel</option>
+        <!-- Add more countries here -->
+    </select>
+        <h1 class="mb-2"> <label for="weight" style="font-weight:600;">Weight (gm)</label></h1>
+        <input type="number" name="weight" id="weight">
+        <div class="control">
+                <button class="button is-uppercase" id="calculate" style="background-color: #ca373d; color:#fff;">Calculate</button>
+        </div>
+        <div>
+        <p class=" mt-3" id="tarrifCalculated" style="display: none; font-weight:600;">Cost Is: $10.5</p></div>
+    </div>
+
+    <div class="box">
+        <h2 class="is-size-3 mb-4">My Orders</h2>
+
+        {% if orders %}
+            {% for order in orders %}
+                <div class="{% if order.fully_paid %}has-background-success-light{% else %}has-background-info-light{% endif %} mb-2 p-4">
+                    <div class="columns is-multiline">
+                        <div class="column is-6">
+                            <h3 class="is-size-4">#{{ order.id }} - {{ order.first_name }} {{ order.last_name }}</h3> <!--{{ order.first_name }} {{ order.last_name }}-->
+                        </div>
+    
+                        <div class="column is-12">
+                            <b>Name:</b> {{ order.first_name }} {{ order.last_name }}<br> <!--{{ order.first_name }} {{ order.last_name }}-->
+                            <b>Address:</b>{{ order.address }}<br> <!--{{ order.address }}-->
+                            <b>Zip and place:</b>{{ order.zipcode }} {{ order.place }}<br> <!--{{ order.zipcode }} {{ order.place }}-->
+                            <b>E-mail:</b> {{ order.email }}<br> <!--{{ order.email }} -->
+                            <b>Phone:</b> {{ order.phone }} <!--{{ order.phone }} -->
+    
+                            <table class="table is-fullwidth mt-4">
+                                <thead>
+                                    <tr>
+                                        <th>Title</th>
+                                        <th>Price</th>
+                                        <th>Quantity</th>
+                                        <th>Paid</th>
+                                        <th>Total</th>
+                                    </tr>
+                                </thead>
+    
+                                <tbody>
+                                    {% for item in order.items.all %}
+                                        {% if item.vendor == request.user.vendor %}
+                                            <tr>
+                                                <td>{{ item.product.title }}</td>
+                                                <td>${{ item.product.price }}</td>
+                                                <td>{{ item.quantity }}</td>
+                                                <td>{{ item.vendor_paid|yesno:"Yes,No" }}</td>
+                                                <td>${{ item.get_total_price }}</td>
+                                            </tr>
+                                        {% endif %}
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                            <button class="add-product"><a class="add_prod" target="__new" href="https://dnk.cept.gov.in/customers.web">Book Article</a></button>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        {% else %}
+            <h3>Oops! Not any Order</h3>
+        {% endif %}
+
+    </div>
+
+{% endblock content %}
+{% block scripts %}
+<script>
+    const check = document.getElementById('submit');
+    const tarrifCalculated = document.getElementById('tarrifCalculated');
+    const calculate = document.getElementById('calculate');
+    const div = document.getElementById('successdiv');
+    const close = document.getElementById('close');
+    const closebtn = document.getElementById('closebtn');
+    check.addEventListener('click', ()=>{
+        div.style.display = 'block';
+    });
+    close.addEventListener('click', ()=>{
+        div.style.display = 'none';
+    });
+    closebtn.addEventListener('click', ()=>{
+        div.style.display = 'none';
+    });
+    calculate.addEventListener('click', ()=>{
+        tarrifCalculated.style.display = 'block';
+    });
+
+</script>
+{% endblock scripts %}

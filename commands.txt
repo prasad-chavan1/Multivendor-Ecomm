@@ -1,0 +1,13 @@
+pip install virtualenv
+python -m venv venv
+venv/scripts/activate
+cd simple-multivendor-site
+pip install -r requirements.txt
+
+Go to settings.py file
+Then, On allowed hosts, Add [‘*’].
+ALLOWED_HOSTS = ['*']
+
+python manage.py runserver
+python manage.py createsuperuser
+Enjoii...

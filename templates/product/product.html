@@ -1,0 +1,338 @@
+{% extends 'core/base.html' %}
+
+{% block title %}{{product.title}}{% endblock title %}
+{% block css %}
+/* Reset some default styles for the page */
+body, h1, p, label {
+    margin: 0;
+    padding: 0;
+}
+
+/* Style for the product container */
+.product {
+    display: flex;
+    flex-direction: column;
+    max-width: 800px;
+    margin: 20px auto;
+    padding: 20px;
+    border: 1px solid #ddd;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+}
+
+/* Style for the product image */
+.product-image img {
+    max-width: 100%;
+    height: auto;
+}
+
+.product-details {
+    flex: 1;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+.product-details p{
+    font-size: 15px;
+    line-height: 22px;
+    color: black;
+margin-bottom:0;
+}
+
+/* Style for the product title */
+.product-title {
+    font-size: 24px;
+    margin-bottom: 15px;
+}
+
+/* Style for the product category and description */
+.product-category,
+.product-description {
+    font-size: 16px;
+    margin-bottom: 10px;
+}
+
+/* Style for the product price */
+.product-price {
+    font-size: 20px;
+    font-weight: bold;
+    margin-bottom: 15px;
+}
+
+/* Style for the quantity input and add to cart button */
+.product-actions {
+    display: flex;
+    align-items: center;
+}
+
+#quantity {
+    width: 50px;
+    padding: 5px;
+    margin-right: 10px;
+}
+
+.add-to-cart {
+    background-color: #2e4ead;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    font-size: 18px;
+    cursor: pointer;
+}
+
+.cat_p{
+    margin-top: 5px;
+    margin-bottom: 15px;
+    color: white;
+    background-color: #ffd907;
+    padding: 8px 8px 8px 8px;
+    height: fit-content;
+    width: fit-content;
+    border-radius: 4px;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+body {
+  font-family: poppins;
+}
+ul {
+  list-style-type: none;
+}
+img {
+  user-select: none !important;
+  list-style-type: none;
+}
+
+/* START */
+.container__feed {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+}
+.feedbacks {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.feed_box {
+  position: relative;
+  width: 100%;
+  max-width: 500px;
+  border-radius: 15px;
+  padding: 15px 20px;
+  box-shadow: 0 0 10px #00000028;
+  z-index: 999;
+  background-color: #fff;
+  overflow: hidden;
+}
+.feed_box .user_icon img {
+  position: absolute;
+  width: 45%;
+  min-width: 150px;
+  top: 15px;
+  right: -15px;
+  z-index: -1;
+}
+.feed__hed {
+  display: flex;
+  align-items: center;
+  z-index: 99 !important;
+}
+.feed__hed .usr_img {
+  width: 45px;
+  height: 45px;
+  padding: 11px;
+  border-radius: 50px;
+  box-shadow: 0 0 5px #00000033;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.feed__hed .usr_img img {
+  width: 100%;
+}
+.feed__hed h1 {
+  margin-left: 10px;
+  font-size: 2.2rem;
+}
+.container__users_info {
+  display: flex;
+  flex-direction: column;
+}
+.feed_txt {
+  position: relative;
+  margin-top: 12px;
+}
+.feed_txt::before {
+  position: absolute;
+  content: "";
+  z-index: 99;
+  bottom: -1px;
+  left: 0;
+  width: 100%;
+  height: 20px;
+
+}
+.feed_txt summary {
+  width: 100%;
+  height: 100px;
+  overflow-y: scroll;
+  padding-bottom: 10px;
+}
+.feed_txt summary::-webkit-scrollbar {
+  display: none !important;
+}
+.feed_foot {
+  margin-top: 14px;
+  display: flex;
+  justify-content: space-between;
+}
+.feed_foot a {
+  padding: 9px 20px;
+  border-radius: 5px;
+  text-decoration: none;
+  color: black;
+  background: #ffd907;
+}
+
+
+/* MEDIA */
+@media (max-width: 800px) {
+  .feedbacks {
+    display: flex;
+    flex-direction: column;
+  }
+  .feed_box {
+    position: relative;
+    width: 100%;
+    max-width: 100%;
+  }
+}
+@media (max-width: 450px) {
+  .feed__hed h1 {
+    font-size: 1.4em;
+  }
+}
+
+
+.review{
+    padding: 17px 12px;
+}
+
+
+{% endblock css %}
+
+{% block content %}
+
+    <div class="product">
+        {% if product.image %}
+        <div class="product-image">
+            <img src="{{product.image.url}}" alt="{{product.title}}">
+        </div>
+        {% endif %}
+        <div class="product-details">
+            <h1 style="font-weight:600;" class="product-title">{{product.title}}</h1>
+            <h2>By, <b>{{product.vendor.name}}</b></h2>
+
+            <div class="cat_p"><p class="product-category">{{product.category}}</p></div>
+            <p class="product-description" style="margin-bottom:10px;">{{product.description}}</p>
+            <p class="product-price">${{product.price}}</p>
+        </div>
+        {% if messages %}
+            {% for message in messages %}
+                <div class="notification is-success is-toast">{{ message }}</div>
+            {% endfor %}
+        {% endif %}
+
+        <form method="post" action="">
+        {% csrf_token %}
+
+        <div class="field has-addons">
+            <div class="control">
+                <input type="number" name="quantity" value="1" class="input" min="1" id="">
+            </div>
+
+            <div class="control">
+                <button class="button is-uppercase" style="background: #ca373d; color: white;">Add to Cart</button>
+            </div>
+        </div>
+    </form>
+        <div class="review">
+            <h1 style="font-weight:600;">Top reviews</h1>
+        </div>
+
+        <div class="container__feed" style="z-index: 1;">
+        <div class="feedbacks">
+            <div class="feed_box" style="color: white; background-color: #ca373d;">
+                <ul class="feed__hed">
+
+                    <li>
+                        <h1>User</h1>
+                    </li>
+                </ul>
+                <div class="feed_txt">
+                    <summary>
+                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Recusandae nulla reprehenderit beatae
+                        miima maxime cupiditate enim aut cum impedit nihil eum, porro iste explicabo soluta aspernatur
+                        blanditiis neque magni ullam.
+                    </summary>
+                </div>
+                <ul class="feed_foot">
+                    <li>11.20.2022</li>
+                    <li><a href="#">Ko'rish</a></li>
+                </ul>
+            </div>
+            <div class="feed_box" style="background-color: #ca373d; color: white;">
+
+                <ul class="feed__hed">
+
+                    <li>
+                        <h1>User</h1>
+                    </li>
+                </ul>
+                <div class="feed_txt">
+                    <summary>
+                        Lorem ipsum dolor sit, amet consectetur adipisicing elit. Reiciendis recusandae ut aliquid ab,
+                        non reprehenderit minus nihil, officiis necessitatibus eveniet iure accusantium veritatis
+                        exercitationem. Quibusdam, modi. Nesciunt harum temporibus hic qui aliquid ipsa atque odit quam
+                        numquam sapiente asperiores, a, molestias illum iure distinctio illo? Magnam exercitationem
+                        culpa illum sint iste obcaecati aliquid, provident, alias laborum debitis deserunt aspernatur.
+                        Dolore reprehenderit saepe facere nisi accusamus provident architecto cumque nihil, tenetur
+                        libero, a sequi. Perferendis deleniti error laborum, natus enim rerum cumque nisi dignissimos
+                        veniam perspiciatis voluptate! Impedit nisi dicta et odio corrupti porro laudantium error
+                        cupiditate exercitationem quibusdam soluta consectetur incidunt voluptatem necessitatibus
+                        voluptates dolor non
+                    </summary>
+                </div>
+                <ul class="feed_foot">
+                    <li>11.20.2022</li>
+                    <li><a href="#">Ko'rish</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+    {% if similar_products %}
+        <hr>
+
+        <div class="columns is-multiline">
+            <div class="column is-12">
+                <h2 class="subtitle">Similar Products</h2>
+            </div>
+
+            {% for product in similar_products %}
+                {% include 'product/parts/list_item.html' %}
+            {% endfor %}
+        </div>
+    {% endif %}
+
+{% endblock content %}

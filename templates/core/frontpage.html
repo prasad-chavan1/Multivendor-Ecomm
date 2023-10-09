@@ -1,0 +1,171 @@
+{% extends 'core/base.html' %}
+
+{% block title %}e-Post Office{% endblock title %}
+
+{% block css %}
+        .service-11 h1, .service-11 h2, .service-11 h3, .service-11 h4, .service-11 h5, .service-11 h6 {
+  color: #ca373d;
+}
+
+.service-11 .font-weight-medium {
+	font-weight: 500;
+}
+
+.service-11 .bg-light {
+    background-color: #f4f8fa !important;
+}
+
+.service-11 .subtitle {
+    color: #8d97ad;
+    line-height: 24px;
+}
+
+.service-11 .card.card-shadow {
+    -webkit-box-shadow: 0px 0px 30px rgba(115, 128, 157, 0.1);
+    box-shadow: 0px 0px 30px rgba(115, 128, 157, 0.1);
+}
+
+.service-11 .wrap-service11-box {
+  margin-top: 40px;
+}
+
+.service-11 .wrap-service11-box .icon-space {
+  margin: -70px 0 20px;
+}
+
+.service-11 .wrap-service11-box .icon-space .icon-round {
+  font-size: 45px;
+  color: #ffffff;
+}
+
+.service-11 .bg-success-gradiant {
+    background: #2cdd9b;
+    background: -webkit-linear-gradient(legacy-direction(to right), #2cdd9b 0%, #1dc8cc 100%);
+    background: -webkit-gradient(linear, left top, right top, from(#2cdd9b), to(#1dc8cc));
+    background: -webkit-linear-gradient(left, #2cdd9b 0%, #1dc8cc 100%);
+    background: -o-linear-gradient(left, #2cdd9b 0%, #1dc8cc 100%);
+    background: linear-gradient(to right, #2cdd9b 0%, #1dc8cc 100%);
+}
+
+.service-11 .icon-round {
+		width: 80px;
+    line-height: 80px;
+}
+
+.service-11 .btn-success-gradiant {
+		background: #2cdd9b;
+    background: -webkit-linear-gradient(legacy-direction(to right), #2cdd9b 0%, #1dc8cc 100%);
+    background: -webkit-gradient(linear, left top, right top, from(#2cdd9b), to(#1dc8cc));
+    background: -webkit-linear-gradient(left, #2cdd9b 0%, #1dc8cc 100%);
+    background: -o-linear-gradient(left, #2cdd9b 0%, #1dc8cc 100%);
+    background: linear-gradient(to right, #2cdd9b 0%, #1dc8cc 100%);
+}
+
+.service-11 .btn-success-gradiant:hover {
+		background: #1dc8cc;
+    background: -webkit-linear-gradient(legacy-direction(to right), #1dc8cc 0%, #2cdd9b 100%);
+    background: -webkit-gradient(linear, left top, right top, from(#1dc8cc), to(#2cdd9b));
+    background: -webkit-linear-gradient(left, #1dc8cc 0%, #2cdd9b 100%);
+    background: -o-linear-gradient(left, #1dc8cc 0%, #2cdd9b 100%);
+    background: linear-gradient(to right, #1dc8cc 0%, #2cdd9b 100%);
+}
+
+.service-11 .btn-md {
+    padding: 15px 45px;
+    font-size: 16px;
+}
+
+
+{% endblock css %}
+
+{% block content %}
+{% load static %}
+
+<div id="carouselExampleControls" class="carousel slide" data-bs-ride="carousel">
+  <div class="carousel-inner">
+    <div class="carousel-item active">
+      <img src="{% static 'images/polotno.jpeg' %}" class="d-block" style="height:250px; width:1350px;" alt="...">
+    </div>
+    <div class="carousel-item">
+      <img src="{% static 'images/banner3.jpg' %}" class="d-block " style="height:250px; width:1350px;" alt="...">
+    </div>
+    <div class="carousel-item">
+      <img src="{% static 'images/banner2.jpg' %}" class="d-block" style="height:250px; width:1350px;" alt="...">
+    </div>
+  </div>
+  <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="prev">
+    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+    <span class="visually-hidden">Previous</span>
+  </button>
+  <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="next">
+    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+    <span class="visually-hidden">Next</span>
+  </button>
+</div>
+
+
+
+
+    <div class="columns is-multiline mt-3 mb-6">
+
+        <div class="column is-12 has-test-centered" style="border-bottom: solid 2px #ca373d;">
+            <h2 class="is-size-3" style="color: #ca373d;">Best Selling Products</h2>
+        </div>
+        {% for product in newest_products %}
+            {% include 'product/parts/list_item.html' %}
+        {% endfor %}
+
+    </div>
+
+<div class="column is-12 has-test-centered" style="border-bottom: solid 2px #ca373d;">
+            <h2 class="is-size-3" style="color: #ca373d;">Our Services</h2>
+</div>
+
+<div class="bg-light py-5 service-11">
+    <div class="container">
+        <!-- Row  -->
+        <div class="row">
+            <!-- Column -->
+            <div class="col-md-4 wrap-service11-box">
+                <div class="card card-shadow border-0 mb-4">
+                    <div class="p-4">
+                        <div class="icon-space">
+                            <div style="background-color: #ca373d;" class="icon-round text-center d-inline-block rounded-circle">💸</div>
+                        </div>
+                        <h6 class="font-weight-medium">Low Charges & Taxes</h6>
+                        <p class="mt-3">Our DNK offers budget-friendly delivery services that won't break the bank!
+Experience the joy of cost-effective parcel delivery with our post office's low charges</p>
+                    </div>
+                </div>
+            </div>
+            <!-- Column -->
+            <div class="col-md-4 wrap-service11-box">
+                <div class="card card-shadow border-0 mb-4">
+                    <div class="p-4">
+                        <div class="icon-space">
+                            <div style="background-color: #ca373d;"  class="icon-round text-center d-inline-block rounded-circle">🚚</div>
+                        </div>
+                        <h6 class="font-weight-medium">Fruitful Results</h6>
+                        <p class="mt-3">Track your parcels easily with affordable DNK tracking service. Without emptying your wallet – choose our post office for budget-friendly tracking options.</p>
+                    </div>
+                </div>
+            </div>
+            <!-- Column -->
+            <div class="col-md-4 wrap-service11-box">
+                <div class="card card-shadow border-0 mb-4">
+                    <div class="p-4">
+                        <div class="icon-space">
+                            <div style="background-color: #ca373d;"  class="icon-round text-center d-inline-block rounded-circle">🤝</div>
+                        </div>
+                        <h6 class="font-weight-medium">Instant Solutions</h6>
+                        <p class="mt-3">International customers trust us for reliable shipping solutions. Our post office enjoys the trust of customers worldwide for international deliveries</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+{% endblock content %}
